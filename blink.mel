@@ -1,0 +1,9 @@
+// Function for procedurally creating a series of nurbs (semi)spheres of varying
+// sweeping angles to allow for the illusion of a cartoonish eyelid blinking.
+proc createEyelid(float $x, float $y, float $z, float $r, float $startSweepAngle) {
+    // Create spheres and immediately bind their names to string (arrays)
+    for (int $i = 0; ($startSweeping + ($i*10)) % $startSweeping; ++$i) { 
+        sphere -n ("eyeFrame" + $i) -r $r -ssw $startSweeping -esw ($startSweeping + (i*10));
+        move -absolute $x $y $z;
+    }               
+}
