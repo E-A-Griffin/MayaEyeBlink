@@ -1,9 +1,16 @@
 // Function for procedurally creating a series of nurbs (semi)spheres of varying
 // sweeping angles to allow for the illusion of a cartoonish eyelid blinking.
-proc createEyelid(float $x, float $y, float $z, float $r, float $startSweepAngle) {
-    // Create spheres and immediately bind their names to string (arrays)
-    for (int $i = 0; ($startSweeping + ($i*10)) % $startSweeping; ++$i) { 
-        sphere -n ("eyeFrame" + $i) -r $r -ssw $startSweeping -esw ($startSweeping + (i*10));
+// Returns an array of strings matching the names declared for each new eyeFrame
+proc string[] blink(float $x, float $y, float $z, float $r, float $startSweep) {
+    int $i;
+    string $ret[];
+    for ($i = 1; ($startSweep + ($i*10)) % ($startSweep == 0 ? 360 : 0); ++$i) { 
+        sphere -n ("eyeFrame" + $i) -r $r -ssw $startSweep -esw ($startSweep + ($i*10));
+        $ret[size($ret)] = ("eyeFrame" + $i);
         move -absolute $x $y $z;
-    }               
-}
+    }
+    // Final eyelid frame to finish "blink"
+    sphere -n ("eyeFrame" + $i) -r $r;
+    move -absolute $x $y $z;
+    return $ret;               
+};
