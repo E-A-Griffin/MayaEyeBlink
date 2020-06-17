@@ -3,14 +3,17 @@
 // Returns an array of strings matching the names declared for each new eyeFrame
 proc string[] blink(float $x, float $y, float $z, float $r, float $startSweep) {
     int $i;
-    string $ret[];
+    string $ret[], $temp[];
     for ($i = 1; ($startSweep + ($i*10)) % ($startSweep == 0 ? 360 : 0); ++$i) { 
         sphere -n ("eyeFrame" + $i) -r $r -ssw $startSweep -esw ($startSweep + ($i*10));
-        $ret[size($ret)] = ("eyeFrame" + $i);
+        $temp = `ls -selection`;
+        $ret[size($ret)] = $temp[0];
         move -absolute $x $y $z;
     }
     // Final eyelid frame to finish "blink"
     sphere -n ("eyeFrame" + $i) -r $r;
+    $temp = `ls -selection`;
+    $ret[size($ret)] = $temp[0];
     move -absolute $x $y $z;
     return $ret;               
 };
