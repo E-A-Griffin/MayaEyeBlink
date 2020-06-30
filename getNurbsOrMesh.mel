@@ -1,0 +1,44 @@
+// Get first string in string array
+proc string firstString(string $arr[]) {
+    return $arr[0];
+};
+
+// Get last character (substring) in string
+proc string endStr(string $str) {
+    return substring($str, size($str), size($str));
+};
+
+// Get substring of every character except the last character in a string
+proc string butLastStr(string $str) {
+    return substring($str, 1, size($str)-1);
+}
+
+// Returns a string indicating whether the currently selected object is a 
+// nurbsSurface or mesh
+proc string getSelectedNurbsOrMesh() {
+
+    // User given name "objNameShape"
+    if (!catchQuiet(nodeType(firstString(ls("-selection", "-showType")) + "Shape")))
+        return nodeType (firstString(ls("-selection", "-showType")) + "Shape"); 
+    // Maya default naming convention of "objTypeShape#"
+    else
+        return 
+          nodeType(butLastStr(firstString(ls("-selection", "-showType"))) 
+                                            + "Shape" 
+                                            + endStr(
+                                               firstString(
+                                                 ls("-selection", "-showType"))));
+};
+
+// Returns a string indicating whether obj is a 
+// nurbsSurface or mesh
+proc string getNurbsOrMesh(string $obj) {
+
+    // User given name "objNameShape"
+    if (!catchQuiet(nodeType($obj + "Shape")))
+        return nodeType ($obj + "Shape"); 
+    // Maya default naming convention of "objTypeShape#"
+    else
+        return 
+          nodeType(butLastStr($obj) + "Shape" + endStr($obj));
+};
