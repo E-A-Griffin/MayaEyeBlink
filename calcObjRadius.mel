@@ -1,0 +1,21 @@
+// Get radius of given object based on its center and a given point on its surface
+proc float calcObjRadius(string $obj) {
+    float $radius = 0;
+    float $center[] = xform("-q", "-ws", "-t", $obj);  
+    float $point[];  
+    
+    // Get "first" vertex of obj, whether obj is a polygon mesh
+    // or nurbsSurface
+    if (getNurbsOrMesh($obj) == "mesh")
+      $point = xform("-q", "-ws", "-t", $obj + ".vtx[0]");
+    else
+      $point = xform("-q", "-ws", "-t", $obj + ".cv[0][0]");
+      
+
+    // Get average of each coordinate
+    for ($i = 0; $i < 3; ++$i)
+      $radius += ($point[$i] - $center[$i])*($point[$i] - $center[$i]);
+    
+    // Get radius based on avg of distances of each coordinate
+    return sqrt($radius);
+};
